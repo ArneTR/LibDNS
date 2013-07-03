@@ -28,6 +28,11 @@ class BitMap extends Type
     protected $value = '';
 
     /**
+     * @var int Types enum value that relates to this type
+     */
+    protected $typeIndex = Types::BIT_MAP;
+
+    /**
      * Set the internal value
      *
      * @param string $value The new value

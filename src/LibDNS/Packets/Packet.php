@@ -33,9 +33,14 @@ class Packet
     private $length;
 
     /**
-     * @var int Read pointer
+     * @var int Byte read pointer
      */
-    private $pointer = 0;
+    private $bytePointer = 0;
+
+    /**
+     * @var int Bit read pointer
+     */
+    private $bitPointer = 0;
 
     /**
      * Constructor
@@ -54,25 +59,92 @@ class Packet
      *
      * @param int $length The number of bytes to read
      *
+     * @return string
+     *
      * @throws \OutOfBoundsException When the pointer position is invalid or the supplied length is negative
      */
     public function read($length = null)
     {
-        if ($this->pointer >= $this->length) {
+        if ($this->bytePointer >= $this->length) {
             throw new \OutOfBoundsException('Pointer position invalid');
         }
 
         if ($length === null) {
-            $result = substr($this->data, $this->pointer);
-            $this->pointer = $this->length;
+            $result = substr($this->data, $this->bytePointer);
+            $this->bytePointer = $this->length;
+            $this->bitPointer = 0;
         } else {
             $length = (int) $length;
             if ($length < 0) {
                 throw new \OutOfBoundsException('Length must be a positive integer');
             }
 
-            $result = substr($this->data, $this->pointer, (int) $length);
-            $this->pointer += $length;
+            $result = substr($this->data, $this->bytePointer, (int) $length);
+            $this->bytePointer += $length;
+            if ($length > 0) {
+                $this->bitPointer = 0;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Read bits from the packet data
+     *
+     * @param int $length The number of bits to read
+     *
+     * @return int
+     *
+     * @throws \OutOfBoundsException When the pointer position is invalid
+     * @throws \UnderflowException   When the requested length is less than 1
+     * @throws \OverflowException    When the requested length is greater than 32 or the number of remaining bits
+     */
+    public function readBits($length)
+    {
+        if ($this->bytePointer >= $this->length) {
+            throw new \OutOfBoundsException('Pointer position invalid');
+        }
+
+        $length = (int) $length;
+        if ($length < 1) {
+            throw new \UnderflowException('Bit read length cannot be less than 1');
+        } else if ($length > 32) {
+            throw new \OverflowException('Bit read length cannot be greater than 32');
+        }
+
+        // Get the number of bytes involved in extracting the requested number of bits
+        $byteCount = ceil((($length + $this->bitPointer) / 32) * 4);
+        if ($byteCount > $this->length - $this->bytePointer) {
+            throw new \OverflowException('Bit read length exceeds available data length');
+        }
+
+        $result = 0;
+
+        for ($i = 1; $i <= $byteCount; $i++) {
+            $byte = ord($this->data[$this->bytePointer]);
+
+            // Get the number of bits to extract from the current byte
+            $bits = min(8 - $this->bitPointer, $length);
+            $length -= $bits;
+
+            // Get the number of bits on the rhs of the bits we are extracting from this byte
+            $rightAlign = (7 - ($this->bitPointer + $bits - 1));
+
+            // Create a mask where only the bits we are interested in are set
+            $mask = (0xff >> (8 - $bits)) << $rightAlign;
+
+            // Extract the relevant bits, shift into the right position and update the result
+            $result |= (($byte & $mask) >> $rightAlign) << $length;
+
+            // Remove the extracted bits from the data
+            $this->data[$this->bytePointer] = chr($byte & ~$mask);
+
+            $this->bitPointer += $bits;
+            if ($this->bitPointer === 8) {
+                $this->bitPointer = 0;
+                $this->bytePointer++;
+            }
         }
 
         return $result;
@@ -96,21 +168,23 @@ class Packet
     }
 
     /**
-     * Reset the read pointer
-     */
-    public function reset()
-    {
-        $this->pointer = 0;
-    }
-
-    /**
-     * Get the pointer index
+     * Get the bit pointer index
      *
      * @return int
      */
-    public function getPointer()
+    public function getBitPointer()
     {
-        return $this->pointer;
+        return $this->bitPointer;
+    }
+
+    /**
+     * Get the byte pointer index
+     *
+     * @return int
+     */
+    public function getBytePointer()
+    {
+        return $this->bytePointer;
     }
 
     /**
@@ -130,6 +204,6 @@ class Packet
      */
     public function getBytesRemaining()
     {
-        return $this->length - $this->pointer;
+        return $this->length - $this->bytePointer;
     }
 }

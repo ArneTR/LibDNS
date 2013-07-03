@@ -22,6 +22,7 @@ use \LibDNS\Packets\PacketFactory,
     \LibDNS\Records\RData,
     \LibDNS\Records\Types\Type,
     \LibDNS\Records\Types\Anything,
+    \LibDNS\Records\Types\BitField,
     \LibDNS\Records\Types\BitMap,
     \LibDNS\Records\Types\Char,
     \LibDNS\Records\Types\CharacterString,
@@ -164,6 +165,18 @@ class Decoder
         $anything->setValue($this->readDataFromPacket($decodingContext->getPacket(), $length));
 
         return $length;
+    }
+
+    /**
+     * Decode a BitField field
+     *
+     * @param \LibDNS\Decoder\DecodingContext $decodingContext
+     * @param \LibDNS\Records\Types\BitField  $bitField        The object to populate with the result
+     *
+     * @return string
+     */
+    private function encodeBitField(DecodingContext $decodingContext, BitField $bitField)
+    {
     }
 
     /**
@@ -372,6 +385,8 @@ class Decoder
     {
         if ($type instanceof Anything) {
             $result = $this->decodeAnything($decodingContext, $type, $length);
+        } else if ($type instanceof BitField) {
+            $result = $this->decodeBitField($decodingContext, $type);
         } else if ($type instanceof BitMap) {
             $result = $this->decodeBitMap($decodingContext, $type, $length);
         } else if ($type instanceof Char) {

@@ -15,6 +15,7 @@ namespace LibDNS\Records\TypeDefinitions;
 
 use \LibDNS\Records\Types\Type,
     \LibDNS\Records\Types\Anything,
+    \LibDNS\Records\Types\BitField,
     \LibDNS\Records\Types\BitMap,
     \LibDNS\Records\Types\Char,
     \LibDNS\Records\Types\CharacterString,
@@ -137,7 +138,8 @@ class FieldDefinition
     public function assertDataValid(Type $value)
     {
         return (($this->type & Types::ANYTHING)         && $value instanceof Anything)
-            || (($this->type & Types::BITMAP)           && $value instanceof BitMap)
+            || (($this->type & Types::BIT_FIELD)        && $value instanceof BitField)
+            || (($this->type & Types::BIT_MAP)          && $value instanceof BitMap)
             || (($this->type & Types::CHAR)             && $value instanceof Char)
             || (($this->type & Types::CHARACTER_STRING) && $value instanceof CharacterString)
             || (($this->type & Types::DOMAIN_NAME)      && $value instanceof DomainName)

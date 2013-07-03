@@ -28,6 +28,11 @@ class Anything extends Type
     protected $value = '';
 
     /**
+     * @var int Types enum value that relates to this type
+     */
+    protected $typeIndex = Types::ANYTHING;
+
+    /**
      * Set the internal value
      *
      * @param string $value The new value

@@ -40,32 +40,33 @@ class TypeBuilder
     /**
      * Build a new Type object corresponding to a resource record type
      *
-     * @param int $type Data type, can be indicated using the Types enum
+     * @param int   $type Data type, can be indicated using the Types enum
+     * @param mixed $data Value for created object
      *
      * @return \LibDNS\Records\Types\Type
      */
-    public function build($type)
+    public function build($type, $data = null)
     {
         $type = (int) $type;
 
-        if ($type === Types::ANYTHING) {
-            $result = $this->typeFactory->createAnything();
-        } else if ($type === Types::BITMAP) {
-            $result = $this->typeFactory->createBitMap();
-        } else if ($type === Types::CHAR) {
-            $result = $this->typeFactory->createChar();
-        } else if ($type === Types::CHARACTER_STRING) {
-            $result = $this->typeFactory->createCharacterString();
-        } else if ($type === Types::DOMAIN_NAME) {
-            $result = $this->typeFactory->createDomainName();
-        } else if ($type === Types::IPV4_ADDRESS) {
-            $result = $this->typeFactory->createIPv4Address();
-        } else if ($type === Types::IPV6_ADDRESS) {
-            $result = $this->typeFactory->createIPv6Address();
-        } else if ($type === Types::LONG) {
-            $result = $this->typeFactory->createLong();
-        } else if ($type === Types::SHORT) {
-            $result = $this->typeFactory->createShort();
+        if ($type & Types::ANYTHING) {
+            $result = $this->typeFactory->createAnything($data, $type);
+        } else if ($type & Types::BIT_MAP) {
+            $result = $this->typeFactory->createBitMap($data, $type);
+        } else if ($type & Types::CHAR) {
+            $result = $this->typeFactory->createChar($data, $type);
+        } else if ($type & Types::CHARACTER_STRING) {
+            $result = $this->typeFactory->createCharacterString($data, $type);
+        } else if ($type & Types::DOMAIN_NAME) {
+            $result = $this->typeFactory->createDomainName($data, $type);
+        } else if ($type & Types::IPV4_ADDRESS) {
+            $result = $this->typeFactory->createIPv4Address($data, $type);
+        } else if ($type & Types::IPV6_ADDRESS) {
+            $result = $this->typeFactory->createIPv6Address($data, $type);
+        } else if ($type & Types::LONG) {
+            $result = $this->typeFactory->createLong($data, $type);
+        } else if ($type & Types::SHORT) {
+            $result = $this->typeFactory->createShort($data, $type);
         } else {
             throw new \InvalidArgumentException('Invalid Type identifier ' . $type);
         }

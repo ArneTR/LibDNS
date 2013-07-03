@@ -19,6 +19,7 @@ use \LibDNS\Packets\PacketFactory,
     \LibDNS\Records\Resource,
     \LibDNS\Records\Types\Type,
     \LibDNS\Records\Types\Anything,
+    \LibDNS\Records\Types\BitField,
     \LibDNS\Records\Types\BitMap,
     \LibDNS\Records\Types\Char,
     \LibDNS\Records\Types\CharacterString,
@@ -101,6 +102,19 @@ class Encoder
     private function encodeAnything(EncodingContext $encodingContext, Anything $anything)
     {
         return $anything->getValue();
+    }
+
+    /**
+     * Encode a BitField field
+     *
+     * @param \LibDNS\Encoder\EncodingContext $encodingContext
+     * @param \LibDNS\Records\Types\BitField  $bitField
+     *
+     * @return string
+     */
+    private function encodeBitField(EncodingContext $encodingContext, BitField $bitField)
+    {
+        $bits = (int) log($bitField->getMaxValue() + 1, 2);
     }
 
     /**
@@ -260,6 +274,8 @@ class Encoder
             $result = $this->encodeAnything($encodingContext, $type);
         } else if ($type instanceof BitMap) {
             $result = $this->encodeBitMap($encodingContext, $type);
+        } else if ($type instanceof BitField) {
+            $result = $this->encodeBitField($encodingContext, $type);
         } else if ($type instanceof Char) {
             $result = $this->encodeChar($encodingContext, $type);
         } else if ($type instanceof CharacterString) {

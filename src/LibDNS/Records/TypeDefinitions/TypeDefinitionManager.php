@@ -105,7 +105,7 @@ class TypeDefinitionManager
         ResourceTypes::WKS => [ // RFC 1035
             'address'  => Types::IPV4_ADDRESS,
             'protocol' => Types::SHORT,
-            'bit-map'  => Types::BITMAP,
+            'bit-map'  => Types::BIT_MAP,
         ],
         ResourceTypes::X25 => [ // RFC 1183
             'psdn-address' => Types::CHARACTER_STRING,

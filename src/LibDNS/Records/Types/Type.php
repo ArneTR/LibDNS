@@ -28,17 +28,30 @@ abstract class Type
     protected $value;
 
     /**
+     * @var int Modifier flags
+     */
+    protected $flags;
+
+    /**
+     * @var int Types enum value that relates to this type
+     */
+    protected $typeIndex;
+
+    /**
      * Constructor
      *
-     * @param mixed $value Internal value
+     * @param mixed $value
+     * @param int   $flags
      *
      * @throws \RuntimeException When the supplied value is invalid
      */
-    public function __construct($value = null)
+    public function __construct($value = null, $flags = 0)
     {
         if (isset($value)) {
             $this->setValue($value);
         }
+
+        $this->flags = (((int) $flags) & 0xfffff000) | $this->typeIndex | $this->flags;
     }
 
     /**
@@ -49,6 +62,26 @@ abstract class Type
     public function __toString()
     {
         return (string) $this->value;
+    }
+
+    /**
+     * Get the modifier flags
+     *
+     * @return int
+     */
+    public function getFlags()
+    {
+        return $this->flags;
+    }
+
+    /**
+     * Types enum value that relates to this type
+     *
+     * @return int
+     */
+    public function getTypeIndex()
+    {
+        return $this->typeIndex;
     }
 
     /**

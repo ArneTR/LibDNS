@@ -28,6 +28,11 @@ class Char extends Type
     protected $value = 0;
 
     /**
+     * @var int Types enum value that relates to this type
+     */
+    protected $typeIndex = Types::CHAR;
+
+    /**
      * Set the internal value
      *
      * @param int $value The new value

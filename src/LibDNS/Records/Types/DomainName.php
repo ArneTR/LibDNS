@@ -33,6 +33,11 @@ class DomainName extends Type
     private $labels = [];
 
     /**
+     * @var int Types enum value that relates to this type
+     */
+    protected $typeIndex = Types::DOMAIN_NAME;
+
+    /**
      * Constructor
      *
      * @param string|string[] $value

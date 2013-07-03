@@ -29,9 +29,9 @@ class TypeFactory
      *
      * @return \LibDNS\Records\Types\Anything
      */
-    public function createAnything($value = null)
+    public function createAnything($value = null, $flags = 0)
     {
-        return new Anything($value);
+        return new Anything($value, $flags);
     }
 
     /**
@@ -41,9 +41,9 @@ class TypeFactory
      *
      * @return \LibDNS\Records\Types\BitMap
      */
-    public function createBitMap($value = null)
+    public function createBitMap($value = null, $flags = 0)
     {
-        return new BitMap($value);
+        return new BitMap($value, $flags);
     }
 
     /**
@@ -53,9 +53,9 @@ class TypeFactory
      *
      * @return \LibDNS\Records\Types\Char
      */
-    public function createChar($value = null)
+    public function createChar($value = null, $flags = 0)
     {
-        return new Char($value);
+        return new Char($value, $flags);
     }
 
     /**
@@ -65,9 +65,9 @@ class TypeFactory
      *
      * @return \LibDNS\Records\Types\CharacterString
      */
-    public function createCharacterString($value = null)
+    public function createCharacterString($value = null, $flags = 0)
     {
-        return new CharacterString($value);
+        return new CharacterString($value, $flags);
     }
 
     /**
@@ -77,9 +77,9 @@ class TypeFactory
      *
      * @return \LibDNS\Records\Types\DomainName
      */
-    public function createDomainName($value = null)
+    public function createDomainName($value = null, $flags = 0)
     {
-        return new DomainName($value);
+        return new DomainName($value, $flags);
     }
 
     /**
@@ -89,9 +89,9 @@ class TypeFactory
      *
      * @return \LibDNS\Records\Types\IPv4Address
      */
-    public function createIPv4Address($value = null)
+    public function createIPv4Address($value = null, $flags = 0)
     {
-        return new IPv4Address($value);
+        return new IPv4Address($value, $flags);
     }
 
     /**
@@ -101,9 +101,9 @@ class TypeFactory
      *
      * @return \LibDNS\Records\Types\IPv6Address
      */
-    public function createIPv6Address($value = null)
+    public function createIPv6Address($value = null, $flags = 0)
     {
-        return new IPv6Address($value);
+        return new IPv6Address($value, $flags);
     }
 
     /**
@@ -113,9 +113,9 @@ class TypeFactory
      *
      * @return \LibDNS\Records\Types\Long
      */
-    public function createLong($value = null)
+    public function createLong($value = null, $flags = 0)
     {
-        return new Long($value);
+        return new Long($value, $flags);
     }
 
     /**
@@ -125,8 +125,8 @@ class TypeFactory
      *
      * @return \LibDNS\Records\Types\Short
      */
-    public function createShort($value = null)
+    public function createShort($value = null, $flags = 0)
     {
-        return new Short($value);
+        return new Short($value, $flags);
     }
 }

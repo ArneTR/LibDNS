@@ -33,6 +33,11 @@ class IPv4Address extends Type
     private $octets = [0, 0, 0, 0];
 
     /**
+     * @var int Types enum value that relates to this type
+     */
+    protected $typeIndex = Types::IPV4_ADDRESS;
+
+    /**
      * Constructor
      *
      * @param string|int[] $value String representation or octet list

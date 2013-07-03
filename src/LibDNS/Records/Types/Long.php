@@ -28,6 +28,11 @@ class Long extends Type
     protected $value = 0;
 
     /**
+     * @var int Types enum value that relates to this type
+     */
+    protected $typeIndex = Types::LONG;
+
+    /**
      * Set the internal value
      *
      * @param int $value The new value

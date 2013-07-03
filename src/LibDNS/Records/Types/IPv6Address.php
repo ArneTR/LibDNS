@@ -28,6 +28,11 @@ class IPv6Address extends Type
     protected $value = '::';
 
     /**
+     * @var int Types enum value that relates to this type
+     */
+    protected $typeIndex = Types::IPV6_ADDRESS;
+
+    /**
      * @var int[] The shorts of the address
      */
     private $shorts = [0, 0, 0, 0, 0, 0, 0, 0];
